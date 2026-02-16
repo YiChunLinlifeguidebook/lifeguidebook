@@ -3,7 +3,8 @@ export default {
     const url = new URL(request.url);
 
     if (url.pathname === "/health") {
-      return new Response(JSON.stringify({ ok: true, timestamp: Date.now() }), {
+      const currentTimestamp = Date.now();
+      return new Response(JSON.stringify({ ok: true, timestamp: currentTimestamp, ts: currentTimestamp }), {
         headers: { "content-type": "application/json; charset=utf-8" },
       });
     }
