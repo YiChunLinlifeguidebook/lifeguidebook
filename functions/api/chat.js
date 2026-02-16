@@ -1,10 +1,14 @@
+// Configuration constants
+const API_TIMEOUT_MS = 30000; // 30 seconds
+const DEFAULT_TEMPERATURE = 0.7;
+
 export async function onRequestPost({ request, env }) {
   const body = await request.json().catch(() => ({}));
   const prompt = body.prompt || "你好";
 
   // Create abort controller for timeout
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+  const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
 
   try {
     const resp = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -19,7 +23,7 @@ export async function onRequestPost({ request, env }) {
           { role: "system", content: "你是 LifeGuide，一個溫柔、同理、情緒優先的人生陪伴型 AI。" },
           { role: "user", content: prompt }
         ],
-        temperature: 0.7
+        temperature: DEFAULT_TEMPERATURE
       }),
       signal: controller.signal,
     });
