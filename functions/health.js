@@ -1,5 +1,9 @@
+// Cache the health response to avoid redundant object creation
+const HEALTH_RESPONSE = JSON.stringify({ ok: true });
+const HEALTH_HEADERS = { "content-type": "application/json; charset=utf-8" };
+
 export async function onRequest(context) {
-  return new Response(JSON.stringify({ ok: true, ts: Date.now() }), {
-    headers: { "content-type": "application/json; charset=utf-8" },
+  return new Response(HEALTH_RESPONSE, {
+    headers: HEALTH_HEADERS,
   });
 }
