@@ -23,6 +23,8 @@
 		"typescript": "5.9.3"
 	},
 	"devDependencies": {
+		"@types/node": "^25.2.3",
+		"@types/react": "^19.2.14",
 		"wrangler": "4.56.0"
 	},
 	"private": true,
@@ -32,7 +34,7 @@
 		"cf-typegen": "wrangler types",
 		"check": "astro build && tsc && wrangler deploy --dry-run",
 		"deploy": "wrangler deploy",
-		"dev": "next dev --no-turbo",
+		"dev": "next dev",
 		"preview": "astro build && wrangler dev"
 	},
 	"type": "module"
