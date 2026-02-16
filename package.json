@@ -35,6 +35,8 @@
 		"check": "astro build && tsc && wrangler deploy --dry-run",
 		"deploy": "wrangler deploy",
 		"dev": "next dev",
+		"dev:astro": "astro dev",
+		"dev:next": "next dev",
 		"preview": "astro build && wrangler dev"
 	},
 	"type": "module"
