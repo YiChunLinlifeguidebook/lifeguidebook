@@ -1,8 +1,25 @@
 {
-	"extends": "astro/tsconfigs/strict",
-	"include": [".astro/types.d.ts", "**/*"],
-	"exclude": ["dist"],
-	"compilerOptions": {
-		"strictNullChecks": true
-	}
+  "extends": "astro/tsconfigs/strict",
+  "include": [
+    ".astro/types.d.ts",
+    "**/*",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "dist"
+  ],
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  }
 }
