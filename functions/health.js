@@ -1,5 +1,8 @@
+import { jsonResponse } from "./utils/response.js";
+
 export async function onRequest(context) {
-  return new Response(JSON.stringify({ ok: true, ts: Date.now() }), {
-    headers: { "content-type": "application/json; charset=utf-8" },
-  });
+  return jsonResponse(
+    { ok: true, ts: Date.now() },
+    { cacheControl: "public, max-age=60" }
+  );
 }

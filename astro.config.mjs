@@ -13,5 +13,14 @@ export default defineConfig({
 		platformProxy: {
 			enabled: true,
 		},
+		routes: {
+			strategy: "auto",
+		},
 	}),
+	vite: {
+		build: {
+			cssMinify: true,
+			minify: "terser",
+		},
+	},
 });
