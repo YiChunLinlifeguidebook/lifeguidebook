@@ -14,7 +14,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 
 // Optimize image URL construction - reuse canonicalURL base
-const imageUrl = new URL(image, Astro.url).toString();
+const imageUrl = new URL(image, canonicalURL).toString();
 ---
 
 <!-- Global Metadata -->
