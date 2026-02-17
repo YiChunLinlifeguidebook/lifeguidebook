@@ -18,8 +18,15 @@ export async function onRequestPost({ request, env }) {
     }),
   });
 
-  const data = await resp.json();
-  return new Response(JSON.stringify(data), {
-    headers: { "content-type": "application/json" },
+  if (!resp.body) {
+    return new Response(await resp.text(), {
+      status: resp.status,
+      headers: { "content-type": resp.headers.get("content-type") || "application/json" },
+    });
+  }
+
+  return new Response(resp.body, {
+    status: resp.status,
+    headers: { "content-type": resp.headers.get("content-type") || "application/json" },
   });
 }
