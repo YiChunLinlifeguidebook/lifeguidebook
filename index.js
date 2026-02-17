@@ -1,9 +1,9 @@
 export default {
-  async fetch(request, env, ctx) {
-    const url = new URL(request.url);
+  async fetch(request, environment, executionContext) {
+    const requestUrl = new URL(request.url);
 
-    if (url.pathname === "/health") {
-      return new Response(JSON.stringify({ ok: true, ts: Date.now() }), {
+    if (requestUrl.pathname === "/health") {
+      return new Response(JSON.stringify({ ok: true, timestamp: Date.now() }), {
         headers: { "content-type": "application/json; charset=utf-8" },
       });
     }
