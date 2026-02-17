@@ -1,15 +1,15 @@
 ---
 import HeaderLink from './HeaderLink.astro';
-import { SITE_TITLE } from '../consts';
+import { SITE_TITLE, NAV_LINKS } from '../consts';
 ---
 
 <header>
 	<nav>
 		<h2><a href="/">{SITE_TITLE}</a></h2>
 		<div class="internal-links">
-			<HeaderLink href="/">Home</HeaderLink>
-			<HeaderLink href="/blog">Blog</HeaderLink>
-			<HeaderLink href="/about">About</HeaderLink>
+			{NAV_LINKS.map(link => (
+				<HeaderLink href={link.href}>{link.label}</HeaderLink>
+			))}
 		</div>
 	</nav>
 </header>
