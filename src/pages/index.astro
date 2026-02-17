@@ -1,41 +1,29 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import PageLayout from '../layouts/PageLayout.astro';
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>📖 Welcome to Life Guide Book</h1>
-			<p>
-				Life Guide Book is a personal space for sharing insights, experiences, and wisdom 
-				about living a meaningful and fulfilling life. This blog covers topics ranging from 
-				personal development to practical life advice.
-			</p>
-			<p>
-				Whether you're looking for inspiration, guidance, or just a different perspective 
-				on life's challenges, you'll find thoughtful content here to help you on your journey.
-			</p>
-			<p>Explore our topics:</p>
-			<ul>
-				<li>Personal growth and self-improvement</li>
-				<li>Life lessons and reflections</li>
-				<li>Practical advice for daily challenges</li>
-				<li>Mindfulness and well-being</li>
-				<li>Building meaningful relationships</li>
-			</ul>
-			<p>
-				Check out the <a href="/blog">blog posts</a> to start reading, or learn more 
-				<a href="/about">about this project</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
-</html>
+<PageLayout>
+	<h1>📖 Welcome to Life Guide Book</h1>
+	<p>
+		Life Guide Book is a personal space for sharing insights, experiences, and wisdom
+		about living a meaningful and fulfilling life. This blog covers topics ranging from
+		personal development to practical life advice.
+	</p>
+	<p>
+		Whether you're looking for inspiration, guidance, or just a different perspective
+		on life's challenges, you'll find thoughtful content here to help you on your journey.
+	</p>
+	<p>Explore our topics:</p>
+	<ul>
+		<li>Personal growth and self-improvement</li>
+		<li>Life lessons and reflections</li>
+		<li>Practical advice for daily challenges</li>
+		<li>Mindfulness and well-being</li>
+		<li>Building meaningful relationships</li>
+	</ul>
+	<p>
+		Check out the <a href="/blog">blog posts</a> to start reading, or learn more
+		<a href="/about">about this project</a>.
+	</p>
+</PageLayout>
+
