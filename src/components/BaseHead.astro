@@ -17,18 +17,22 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 const imageUrl = new URL(image, Astro.url);
 const pageUrl = Astro.url;
 
-// Define meta tags that are duplicated across Open Graph and Twitter
-const socialMetaTags = [
+// Define Open Graph meta tags
+const ogMetaTags = [
   { property: 'og:type', content: 'website' },
-  { property: 'og:url', content: pageUrl },
+  { property: 'og:url', content: String(pageUrl) },
   { property: 'og:title', content: title },
   { property: 'og:description', content: description },
-  { property: 'og:image', content: imageUrl },
-  { property: 'twitter:card', content: 'summary_large_image' },
-  { property: 'twitter:url', content: pageUrl },
-  { property: 'twitter:title', content: title },
-  { property: 'twitter:description', content: description },
-  { property: 'twitter:image', content: imageUrl },
+  { property: 'og:image', content: String(imageUrl) },
+];
+
+// Define Twitter meta tags (uses 'name' instead of 'property')
+const twitterMetaTags = [
+  { name: 'twitter:card', content: 'summary_large_image' },
+  { name: 'twitter:url', content: String(pageUrl) },
+  { name: 'twitter:title', content: title },
+  { name: 'twitter:description', content: description },
+  { name: 'twitter:image', content: String(imageUrl) },
 ];
 ---
 
@@ -50,7 +54,12 @@ const socialMetaTags = [
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 
-<!-- Open Graph / Facebook & Twitter -->
-{socialMetaTags.map(tag => (
+<!-- Open Graph / Facebook -->
+{ogMetaTags.map(tag => (
 	<meta property={tag.property} content={tag.content} />
+))}
+
+<!-- Twitter -->
+{twitterMetaTags.map(tag => (
+	<meta name={tag.name} content={tag.content} />
 ))}

@@ -1,4 +1,4 @@
-import { createJsonResponse } from './utils/response.js';
+import { createJsonResponse } from '../utils/response.js';
 
 export async function onRequestPost({ request, env }) {
   const body = await request.json().catch(() => ({}));
