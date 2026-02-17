@@ -19,6 +19,7 @@ export async function onRequestPost({ request, env }) {
   });
 
   const data = await resp.json();
+  // Return data directly - it's already a parsed object
   return new Response(JSON.stringify(data), {
     headers: { "content-type": "application/json" },
   });
