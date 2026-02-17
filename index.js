@@ -1,5 +1,5 @@
 export default {
-  async fetch(request, env, ctx) {
+  async fetch(request, workerEnv, workerContext) {
     const url = new URL(request.url);
 
     if (url.pathname === "/health") {
