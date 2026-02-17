@@ -153,3 +153,21 @@ hr {
 	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }
+
+/* Utility classes for common patterns */
+.text-no-decor {
+	text-decoration: none;
+}
+
+.rounded-lg {
+	border-radius: 12px;
+}
+
+.text-gray {
+	color: rgb(var(--gray));
+}
+
+.text-gray-dark {
+	color: rgb(var(--gray-dark));
+}
+
