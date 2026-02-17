@@ -1,3 +1,5 @@
+import { createJsonResponse } from './utils/response.js';
+
 export async function onRequestPost({ request, env }) {
   const body = await request.json().catch(() => ({}));
   const prompt = body.prompt || "你好";
@@ -19,7 +21,5 @@ export async function onRequestPost({ request, env }) {
   });
 
   const data = await resp.json();
-  return new Response(JSON.stringify(data), {
-    headers: { "content-type": "application/json" },
-  });
+  return createJsonResponse(data);
 }
