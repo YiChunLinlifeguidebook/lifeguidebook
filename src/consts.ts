@@ -3,3 +3,4 @@
 
 export const SITE_TITLE = "Life Guide Book";
 export const SITE_DESCRIPTION = "A personal guide to living a meaningful life";
+export const GITHUB_URL = "https://github.com/lin0901210103";
