@@ -39,3 +39,23 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 		<Footer />
 	</body>
 </html>
+<script>
+const WORKER_SAVE_URL = "https://YOUR_WORKER_URL/save";
+
+async function saveDecision(question, answer) {
+  try {
+    await fetch(WORKER_SAVE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user: "anonymous",
+        question,
+        answer,
+        timestamp: new Date().toISOString()
+      })
+    });
+  } catch (e) {
+    console.warn("saveDecision failed:", e);
+  }
+}
+</script>
