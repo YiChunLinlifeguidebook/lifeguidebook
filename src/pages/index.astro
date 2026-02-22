@@ -34,5 +34,26 @@ async function askAI(){
 }
 </script>
 
-</body>
+</body><script>
+async function saveMemory(q) {
+  await fetch("https://lifeguide-ai.lin0901210103.workers.dev/save", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      question: q,
+      time: Date.now()
+    })
+  });
+}
+
+document.addEventListener("submit", e => {
+  const input = document.querySelector("#q");
+  if (input) {
+    saveMemory(input.value);
+  }
+});
+</script>
 </html>
+
