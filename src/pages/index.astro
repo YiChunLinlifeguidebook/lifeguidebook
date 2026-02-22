@@ -1,61 +1,31 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>📖 Welcome to Life Guide Book</h1>
-			<p>
-				Life Guide Book is a personal space for sharing insights, experiences, and wisdom 
-				about living a meaningful and fulfilling life. This blog covers topics ranging from 
-				personal development to practical life advice.
-			</p>
-			<p>
-				Whether you're looking for inspiration, guidance, or just a different perspective 
-				on life's challenges, you'll find thoughtful content here to help you on your journey.
-			</p>
-			<p>Explore our topics:</p>
-			<ul>
-				<li>Personal growth and self-improvement</li>
-				<li>Life lessons and reflections</li>
-				<li>Practical advice for daily challenges</li>
-				<li>Mindfulness and well-being</li>
-				<li>Building meaningful relationships</li>
-			</ul>
-			<p>
-				Check out the <a href="/blog">blog posts</a> to start reading, or learn more 
-				<a href="/about">about this project</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
-</html>
-<script>
-const WORKER_SAVE_URL = "https://YOUR_WORKER_URL/save";
+<html>
+<head>
+  <title>LifeGuide AI</title>
+</head>
 
-async function saveDecision(question, answer) {
-  try {
-    await fetch(WORKER_SAVE_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        user: "anonymous",
-        question,
-        answer,
-        timestamp: new Date().toISOString()
-      })
-    });
-  } catch (e) {
-    console.warn("saveDecision failed:", e);
-  }
+<body style="font-family:sans-serif;text-align:center;padding:40px">
+
+<h1>🧭 LifeGuide AI</h1>
+
+<p>
+你的 AI 人生決策中控系統
+</p>
+
+<input id="q" placeholder="輸入你的問題..." />
+<button onclick="demo()">詢問</button>
+
+<div id="answer">（尚未輸出）</div>
+
+<script>
+function demo(){
+  const q=document.getElementById("q").value;
+  document.getElementById("answer").innerText=
+    "AI 正在分析：「"+q+"」";
 }
 </script>
+
+</body>
+</html>
