@@ -2,28 +2,35 @@
 ---
 
 <html>
-<head>
-  <title>LifeGuide AI</title>
-</head>
-
-<body style="font-family:sans-serif;text-align:center;padding:40px">
+<body style="font-family:sans-serif;padding:40px">
 
 <h1>🧭 LifeGuide AI</h1>
 
-<p>
-你的 AI 人生決策中控系統
-</p>
+<input id="q" placeholder="輸入問題"/>
+<button onclick="askAI()">詢問</button>
 
-<input id="q" placeholder="輸入你的問題..." />
-<button onclick="demo()">詢問</button>
-
-<div id="answer">（尚未輸出）</div>
+<div id="answer"></div>
 
 <script>
-function demo(){
+const SAVE_URL = "https://YOUR-WORKER.workers.dev/save";
+
+async function saveDecision(q,a){
+  await fetch(SAVE_URL,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      question:q,
+      answer:a,
+      time:new Date().toISOString()
+    })
+  });
+}
+
+async function askAI(){
   const q=document.getElementById("q").value;
-  document.getElementById("answer").innerText=
-    "AI 正在分析：「"+q+"」";
+  const answer="LifeGuide 分析："+q;
+  document.getElementById("answer").innerText=answer;
+  await saveDecision(q,answer);
 }
 </script>
 
