@@ -59,6 +59,26 @@ All commands are run from the root of the project, from a terminal:
 
 Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
 
+## ⚠️ Legacy Build – Platform Support
+
+The `legacy/astro-prototype` sub-project uses the `@astrojs/cloudflare` adapter, which
+depends on [`workerd`](https://github.com/cloudflare/workerd).
+
+**`workerd` does not support Android/Termux (arm64 LE).** Attempting to build on Termux
+will fail with `Unsupported platform: android arm64 LE`.
+
+**Supported platforms:** Linux (x86_64 / arm64), macOS (x86_64 / Apple Silicon), Windows (WSL).
+
+Use the helper script from the repository root — it detects Android automatically and exits cleanly instead of erroring:
+
+```bash
+npm run legacy:build
+```
+
+To verify the legacy build in CI, a [GitHub Actions workflow](.github/workflows/legacy-build.yml)
+runs `npm install && npm run build` on Ubuntu automatically on every push and pull request.
+See [`legacy/astro-prototype/README.md`](legacy/astro-prototype/README.md) for full details.
+
 ## Credit
 
 This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).

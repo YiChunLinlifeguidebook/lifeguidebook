@@ -1,0 +1,13 @@
+{
+  "name": "legacy-astro-prototype",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "astro build"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "12.6.12",
+    "astro": "5.16.2"
+  }
+}
