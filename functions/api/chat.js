@@ -2,7 +2,7 @@ export async function onRequestPost({ request, env }) {
   const body = await request.json().catch(() => ({}));
   const prompt = body.prompt || "你好";
 
-  const resp = await fetch("https://api.openai.com/v1/chat/completions", {
+  const openAiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
@@ -18,8 +18,8 @@ export async function onRequestPost({ request, env }) {
     }),
   });
 
-  const data = await resp.json();
-  return new Response(JSON.stringify(data), {
+  const chatResponseData = await openAiResponse.json();
+  return new Response(JSON.stringify(chatResponseData), {
     headers: { "content-type": "application/json" },
   });
 }
