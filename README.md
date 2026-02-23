@@ -40,6 +40,8 @@ The `src/content/` directory contains "collections" of related Markdown and MDX 
 
 Any static assets, like images, can be placed in the `public/` directory.
 
+> **Note:** The legacy/astro-prototype build is **not supported on Android/Termux** due to native/binary install scripts (e.g., `workerd` `install.js`). Please verify legacy builds via [GitHub Actions](../../actions) (Ubuntu) or a desktop environment.
+
 ## 🧞 Commands
 
 All commands are run from the root of the project, from a terminal:
