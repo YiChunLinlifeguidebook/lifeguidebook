@@ -1,0 +1,24 @@
+{
+	"name": "lifeguidebook-astro-prototype",
+	"description": "Archived Astro blog prototype — do not modify.",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"astro": "astro",
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro build && wrangler dev",
+		"check": "astro build && tsc && wrangler deploy --dry-run"
+	},
+	"dependencies": {
+		"@astrojs/cloudflare": "12.6.12",
+		"@astrojs/mdx": "4.3.12",
+		"@astrojs/rss": "4.0.14",
+		"@astrojs/sitemap": "3.6.0",
+		"astro": "5.16.2",
+		"typescript": "5.9.3"
+	},
+	"devDependencies": {
+		"wrangler": "4.56.0"
+	}
+}
