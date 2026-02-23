@@ -6,31 +6,31 @@
 
 <h1>🧭 LifeGuide AI</h1>
 
-<input id="q" placeholder="輸入問題"/>
-<button onclick="askAI()">詢問</button>
+<input id="question-input" placeholder="輸入問題"/>
+<button onclick="submitQuestion()">詢問</button>
 
 <div id="answer"></div>
 
 <script>
 const SAVE_URL = "https://YOUR-WORKER.workers.dev/save";
 
-async function saveDecision(q,a){
+async function saveDecision(question, aiAnswer){
   await fetch(SAVE_URL,{
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({
-      question:q,
-      answer:a,
+      question,
+      answer:aiAnswer,
       time:new Date().toISOString()
     })
   });
 }
 
-async function askAI(){
-  const q=document.getElementById("q").value;
-  const answer="LifeGuide 分析："+q;
-  document.getElementById("answer").innerText=answer;
-  await saveDecision(q,answer);
+async function submitQuestion(){
+  const userQuestion=document.getElementById("question-input").value;
+  const aiAnswer="LifeGuide 分析："+userQuestion;
+  document.getElementById("answer").innerText=aiAnswer;
+  await saveDecision(userQuestion,aiAnswer);
 }
 </script>
 

@@ -30,6 +30,7 @@
 		"check": "astro build && tsc && wrangler deploy --dry-run",
 		"deploy": "wrangler deploy",
 		"dev": "astro dev",
+		"legacy:build": "node scripts/legacy-build.js",
 		"preview": "astro build && wrangler dev"
 	},
 	"type": "module"
