@@ -1,0 +1,44 @@
+name: Build Legacy Astro Prototype
+
+# The legacy/astro-prototype build is not supported on Android/Termux
+# due to native/binary install scripts (e.g., workerd install.js).
+# Verify legacy builds here on Ubuntu instead.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-astro:
+    name: Build Astro (legacy)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+  build-proto:
+    name: Build lifeguide-proto
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: lifeguide-proto
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: lifeguide-proto/package-lock.json
+      - run: npm ci
+      - run: npm run build
