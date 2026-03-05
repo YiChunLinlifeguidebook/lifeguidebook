@@ -9,7 +9,7 @@ export async function onRequestPost({ request, env }) {
       );
     }
 
-    const prompt = body.prompt || "你好";
+    const prompt = body.prompt;
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000);
@@ -45,7 +45,6 @@ export async function onRequestPost({ request, env }) {
     return new Response(JSON.stringify(data), {
       headers: {
         "content-type": "application/json",
-        "Cache-Control": "public, max-age=300, s-maxage=600"
       },
     });
   } catch (error) {
