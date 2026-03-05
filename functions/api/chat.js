@@ -9,7 +9,7 @@ export async function onRequestPost({ request, env }) {
       );
     }
 
-    const prompt = body.prompt || "你好";
+    const prompt = body.prompt;
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000);
@@ -26,7 +26,8 @@ export async function onRequestPost({ request, env }) {
           { role: "system", content: "你是 LifeGuide，一個溫柔、同理、情緒優先的人生陪伴型 AI。" },
           { role: "user", content: prompt }
         ],
-        temperature: 0.7
+        temperature: 0.7,
+        stream: true,
       }),
       signal: controller.signal,
     });
@@ -41,11 +42,10 @@ export async function onRequestPost({ request, env }) {
       );
     }
 
-    const data = await resp.json();
-    return new Response(JSON.stringify(data), {
+    return new Response(resp.body, {
       headers: {
-        "content-type": "application/json",
-        "Cache-Control": "public, max-age=300, s-maxage=600"
+        "content-type": "text/event-stream; charset=utf-8",
+        "Cache-Control": "no-store",
       },
     });
   } catch (error) {

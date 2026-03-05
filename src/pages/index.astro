@@ -7,30 +7,65 @@
 <h1>🧭 LifeGuide AI</h1>
 
 <input id="q" placeholder="輸入問題"/>
-<button onclick="askAI()">詢問</button>
+<button id="ask-btn" onclick="askAI()">詢問</button>
 
 <div id="answer"></div>
 
 <script>
-const SAVE_URL = "https://YOUR-WORKER.workers.dev/save";
+async function askAI() {
+  const q = document.getElementById("q").value.trim();
+  if (!q) return;
 
-async function saveDecision(q,a){
-  await fetch(SAVE_URL,{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      question:q,
-      answer:a,
-      time:new Date().toISOString()
-    })
-  });
-}
+  const btn = document.getElementById("ask-btn");
+  const answerDiv = document.getElementById("answer");
 
-async function askAI(){
-  const q=document.getElementById("q").value;
-  const answer="LifeGuide 分析："+q;
-  document.getElementById("answer").innerText=answer;
-  await saveDecision(q,answer);
+  btn.disabled = true;
+  answerDiv.textContent = "思考中…";
+
+  try {
+    const resp = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt: q }),
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({ error: "請求失敗" }));
+      answerDiv.textContent = "錯誤：" + (err.error || "未知錯誤");
+      return;
+    }
+
+    answerDiv.textContent = "";
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split("\n");
+      buffer = lines.pop();
+
+      for (const line of lines) {
+        if (!line.startsWith("data: ")) continue;
+        const data = line.slice(6);
+        if (data === "[DONE]") break;
+        try {
+          const parsed = JSON.parse(data);
+          const content = parsed.choices?.[0]?.delta?.content;
+          if (content) answerDiv.textContent += content;
+        } catch {
+          // Silently skip malformed SSE chunks (e.g. keep-alive lines or partial data)
+        }
+      }
+    }
+  } catch (err) {
+    answerDiv.textContent = "錯誤：" + err.message;
+  } finally {
+    btn.disabled = false;
+  }
 }
 </script>
 
