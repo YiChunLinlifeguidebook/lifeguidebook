@@ -2,9 +2,9 @@ import { jsonResponse, textResponse } from "./utils/response.js";
 
 export default {
   async fetch(request, env, ctx) {
-    const url = new URL(request.url);
+    const requestUrl = new URL(request.url);
 
-    if (url.pathname === "/health") {
+    if (requestUrl.pathname === "/health") {
       return jsonResponse(
         { ok: true, ts: Date.now() },
         { cacheControl: "public, max-age=60" }
