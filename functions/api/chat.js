@@ -1,20 +1,20 @@
 export async function onRequestPost({ request, env }) {
   try {
-    const body = await request.json().catch(() => null);
+    const requestBody = await request.json().catch(() => null);
 
-    if (!body || typeof body.prompt !== 'string') {
+    if (!requestBody || typeof requestBody.prompt !== 'string') {
       return new Response(
         JSON.stringify({ error: "Invalid request: 'prompt' is required" }),
         { status: 400, headers: { "content-type": "application/json" } }
       );
     }
 
-    const prompt = body.prompt || "你好";
+    const prompt = requestBody.prompt || "你好";
 
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000);
+    const abortController = new AbortController();
+    const requestTimeoutId = setTimeout(() => abortController.abort(), 30000);
 
-    const resp = await fetch("https://api.openai.com/v1/chat/completions", {
+    const openAiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
@@ -28,21 +28,21 @@ export async function onRequestPost({ request, env }) {
         ],
         temperature: 0.7
       }),
-      signal: controller.signal,
+      signal: abortController.signal,
     });
 
-    clearTimeout(timeoutId);
+    clearTimeout(requestTimeoutId);
 
-    if (!resp.ok) {
-      const errorText = await resp.text().catch(() => "Unknown error");
+    if (!openAiResponse.ok) {
+      const openAiErrorText = await openAiResponse.text().catch(() => "Unknown error");
       return new Response(
-        JSON.stringify({ error: `OpenAI API error: ${resp.status}`, details: errorText }),
-        { status: resp.status, headers: { "content-type": "application/json" } }
+        JSON.stringify({ error: `OpenAI API error: ${openAiResponse.status}`, details: openAiErrorText }),
+        { status: openAiResponse.status, headers: { "content-type": "application/json" } }
       );
     }
 
-    const data = await resp.json();
-    return new Response(JSON.stringify(data), {
+    const completionData = await openAiResponse.json();
+    return new Response(JSON.stringify(completionData), {
       headers: {
         "content-type": "application/json",
         "Cache-Control": "public, max-age=300, s-maxage=600"
