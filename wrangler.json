@@ -1,30 +1,10 @@
-export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
-    const userInput = url.searchParams.get("q") || "請用一句話介紹 lifeguide.app 是什麼";
-
-    const response = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        input: userInput,
-      }),
-    });
-
-    if (!response.ok) {
-      const err = await response.text();
-      return new Response("OpenAI error:\n" + err, { status: 500 });
-    }
-
-    const data = await response.json();
-    const text = data.output_text || JSON.stringify(data, null, 2);
-
-    return new Response(text, {
-      headers: { "Content-Type": "text/plain; charset=utf-8" },
-    });
+{
+  "name": "lifeguidebook",
+  "main": "dist/_worker.js/index.js",
+  "compatibility_date": "2025-10-08",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS"
   }
-};
+}
