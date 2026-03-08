@@ -1,11 +1,13 @@
+import { jsonResponse } from "../../utils/response.js";
+
 export async function onRequestPost({ request, env }) {
   try {
     const body = await request.json().catch(() => null);
 
     if (!body || typeof body.prompt !== 'string') {
-      return new Response(
-        JSON.stringify({ error: "Invalid request: 'prompt' is required" }),
-        { status: 400, headers: { "content-type": "application/json" } }
+      return jsonResponse(
+        { error: "Invalid request: 'prompt' is required" },
+        { status: 400 }
       );
     }
 
@@ -35,29 +37,21 @@ export async function onRequestPost({ request, env }) {
 
     if (!resp.ok) {
       const errorText = await resp.text().catch(() => "Unknown error");
-      return new Response(
-        JSON.stringify({ error: `OpenAI API error: ${resp.status}`, details: errorText }),
-        { status: resp.status, headers: { "content-type": "application/json" } }
+      return jsonResponse(
+        { error: `OpenAI API error: ${resp.status}`, details: errorText },
+        { status: resp.status }
       );
     }
 
     const data = await resp.json();
-    return new Response(JSON.stringify(data), {
-      headers: {
-        "content-type": "application/json",
-        "Cache-Control": "public, max-age=300, s-maxage=600"
-      },
-    });
+    return jsonResponse(data, { cacheControl: "public, max-age=300, s-maxage=600" });
   } catch (error) {
     if (error.name === 'AbortError') {
-      return new Response(
-        JSON.stringify({ error: "Request timeout" }),
-        { status: 504, headers: { "content-type": "application/json" } }
-      );
+      return jsonResponse({ error: "Request timeout" }, { status: 504 });
     }
-    return new Response(
-      JSON.stringify({ error: "Internal server error", message: error.message }),
-      { status: 500, headers: { "content-type": "application/json" } }
+    return jsonResponse(
+      { error: "Internal server error", message: error.message },
+      { status: 500 }
     );
   }
 }
