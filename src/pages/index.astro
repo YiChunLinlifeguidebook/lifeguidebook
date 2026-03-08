@@ -1,37 +1,146 @@
 ---
 ---
 
-<html>
-<body style="font-family:sans-serif;padding:40px">
+<!doctype html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LifeGuide AI — 人生指南書</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
 
-<h1>🧭 LifeGuide AI</h1>
+    body {
+      font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f7fa;
+      color: #222;
+      font-size: 18px;
+      line-height: 1.7;
+    }
 
-<input id="q" placeholder="輸入問題"/>
-<button onclick="askAI()">詢問</button>
+    .container {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2em 1.25em 4em;
+    }
 
-<div id="answer"></div>
+    h1 {
+      font-size: 2em;
+      margin: 0 0 0.25em;
+      color: #2337ff;
+    }
+
+    .subtitle {
+      color: #606f9f;
+      margin: 0 0 1.5em;
+      font-size: 1em;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 0.6em;
+      margin-bottom: 1.25em;
+    }
+
+    #q {
+      flex: 1;
+      padding: 0.75em 1em;
+      font-size: 1em;
+      border: 1.5px solid #c5cce0;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.2s;
+      min-width: 0;
+    }
+    #q:focus { border-color: #2337ff; }
+
+    button {
+      padding: 0.75em 1.25em;
+      font-size: 1em;
+      background: #2337ff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      min-width: 72px;
+      min-height: 48px;
+      transition: background 0.2s;
+    }
+    button:hover { background: #000d8a; }
+    button:active { background: #000d8a; }
+
+    #answer {
+      background: #fff;
+      border: 1px solid #e5e9f0;
+      border-radius: 10px;
+      padding: 1em 1.25em;
+      min-height: 56px;
+      font-size: 1em;
+      color: #22293a;
+      line-height: 1.7;
+      display: none;
+    }
+    #answer.visible { display: block; }
+
+    .loading {
+      color: #606f9f;
+      font-style: italic;
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 1.6em; }
+      .input-row { flex-direction: column; }
+      button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🧭 LifeGuide AI</h1>
+  <p class="subtitle">人生指南書 — 輸入問題，讓 AI 為你指引方向</p>
+
+  <div class="input-row">
+    <input id="q" type="text" placeholder="請輸入您的問題…" autocomplete="off" />
+    <button onclick="askAI()">詢問</button>
+  </div>
+
+  <div id="answer"></div>
+</div>
 
 <script>
 const SAVE_URL = "https://YOUR-WORKER.workers.dev/save";
 
-async function saveDecision(q,a){
-  await fetch(SAVE_URL,{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      question:q,
-      answer:a,
-      time:new Date().toISOString()
-    })
-  });
+async function saveDecision(q, a) {
+  try {
+    await fetch(SAVE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question: q, answer: a, time: new Date().toISOString() }),
+    });
+  } catch (err) {
+    console.error('Failed to save decision:', err);
+  }
 }
 
-async function askAI(){
-  const q=document.getElementById("q").value;
-  const answer="LifeGuide 分析："+q;
-  document.getElementById("answer").innerText=answer;
-  await saveDecision(q,answer);
+async function askAI() {
+  const q = document.getElementById("q").value.trim();
+  if (!q) return;
+  const box = document.getElementById("answer");
+  box.className = "visible loading";
+  box.innerText = "分析中…";
+  const answer = "LifeGuide 分析：" + q;
+  box.className = "visible";
+  box.innerText = answer;
+  await saveDecision(q, answer);
 }
+
+document.getElementById("q").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") askAI();
+});
 </script>
 
 </body>
