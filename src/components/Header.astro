@@ -7,9 +7,9 @@ import { SITE_TITLE } from '../consts';
 	<nav>
 		<h2><a href="/">{SITE_TITLE}</a></h2>
 		<div class="internal-links">
-			<HeaderLink href="/">Home</HeaderLink>
-			<HeaderLink href="/blog">Blog</HeaderLink>
-			<HeaderLink href="/about">About</HeaderLink>
+			<HeaderLink href="/">首頁</HeaderLink>
+			<HeaderLink href="/blog">部落格</HeaderLink>
+			<HeaderLink href="/about">關於</HeaderLink>
 		</div>
 	</nav>
 </header>
@@ -33,12 +33,17 @@ import { SITE_TITLE } from '../consts';
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 0.25em;
 	}
 	nav a {
-		padding: 1em 0.5em;
+		padding: 0.85em 0.6em;
 		color: var(--black);
 		border-bottom: 4px solid transparent;
 		text-decoration: none;
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
 	}
 	nav a.active {
 		text-decoration: none;
@@ -51,6 +56,15 @@ import { SITE_TITLE } from '../consts';
 	@media (max-width: 720px) {
 		.social-links {
 			display: none;
+		}
+	}
+	@media (max-width: 480px) {
+		h2 {
+			font-size: 0.95em;
+		}
+		nav a {
+			padding: 0.75em 0.5em;
+			font-size: 0.95em;
 		}
 	}
 </style>
