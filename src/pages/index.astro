@@ -1,38 +1,43 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 ---
 
-<html>
-<body style="font-family:sans-serif;padding:40px">
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+	<main>
+		<h1>🧭 LifeGuide AI</h1>
 
-<h1>🧭 LifeGuide AI</h1>
+		<input id="q" placeholder="輸入問題" />
+		<button onclick="askAI()">詢問</button>
 
-<input id="q" placeholder="輸入問題"/>
-<button onclick="askAI()">詢問</button>
-
-<div id="answer"></div>
+		<div id="answer"></div>
+	</main>
+</BaseLayout>
 
 <script>
 const SAVE_URL = "https://YOUR-WORKER.workers.dev/save";
 
-async function saveDecision(q,a){
-  await fetch(SAVE_URL,{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      question:q,
-      answer:a,
-      time:new Date().toISOString()
-    })
-  });
+async function saveDecision(q: string, a: string) {
+	await fetch(SAVE_URL, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+			question: q,
+			answer: a,
+			time: new Date().toISOString(),
+		}),
+	});
 }
 
-async function askAI(){
-  const q=document.getElementById("q").value;
-  const answer="LifeGuide 分析："+q;
-  document.getElementById("answer").innerText=answer;
-  await saveDecision(q,answer);
+async function askAI() {
+	const input = document.getElementById("q") as HTMLInputElement | null;
+	if (!input) return;
+	const q = input.value;
+	const answer = "LifeGuide 分析：" + q;
+	const answerEl = document.getElementById("answer");
+	if (answerEl) answerEl.innerText = answer;
+	await saveDecision(q, answer);
 }
+
+(window as any).askAI = askAI;
 </script>
-
-</body>
-</html>
