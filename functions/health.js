@@ -1,4 +1,4 @@
-import { jsonResponse } from "./utils/response.js";
+import { jsonResponse } from "../../utils/response.js";
 
 export async function onRequest(context) {
   return jsonResponse(
