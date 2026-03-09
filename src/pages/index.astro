@@ -4,33 +4,47 @@
 <html>
 <body style="font-family:sans-serif;padding:40px">
 
-<h1>🧭 LifeGuide AI</h1>
+<h1>🧭 LifeGuide AI <span id="pro-badge" style="display:none;font-size:0.55em;background:#f59e0b;color:#fff;border-radius:4px;padding:2px 8px;vertical-align:middle">PRO</span></h1>
 
-<input id="q" placeholder="輸入問題"/>
+<input id="q" placeholder="輸入問題" style="width:300px"/>
 <button onclick="askAI()">詢問</button>
 
-<div id="answer"></div>
+<div id="answer" style="margin-top:16px;white-space:pre-wrap"></div>
 
 <script>
-const SAVE_URL = "https://YOUR-WORKER.workers.dev/save";
+(async () => {
+  try {
+    const res = await fetch("/api/status");
+    if (res.ok) {
+      const { isPro } = await res.json();
+      if (isPro) document.getElementById("pro-badge").style.display = "inline";
+    }
+  } catch (_) {
+    // Non-critical: badge stays hidden if status endpoint is unavailable
+  }})();
 
-async function saveDecision(q,a){
-  await fetch(SAVE_URL,{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      question:q,
-      answer:a,
-      time:new Date().toISOString()
-    })
-  });
-}
-
-async function askAI(){
-  const q=document.getElementById("q").value;
-  const answer="LifeGuide 分析："+q;
-  document.getElementById("answer").innerText=answer;
-  await saveDecision(q,answer);
+async function askAI() {
+  const q = document.getElementById("q").value.trim();
+  if (!q) return;
+  const answerEl = document.getElementById("answer");
+  answerEl.innerText = "思考中…";
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt: q }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      answerEl.innerText = "錯誤：" + (err.error || res.status);
+      return;
+    }
+    const data = await res.json();
+    const reply = data.choices?.[0]?.message?.content ?? "無法解析回應";
+    answerEl.innerText = reply;
+  } catch (e) {
+    answerEl.innerText = "連線失敗：" + e.message;
+  }
 }
 </script>
 
