@@ -21,7 +21,7 @@ export async function onRequestPost({ request, env }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        model: env.IS_PRO === "true" ? "gpt-4o" : "gpt-4o-mini",
         messages: [
           { role: "system", content: "你是 LifeGuide，一個溫柔、同理、情緒優先的人生陪伴型 AI。" },
           { role: "user", content: prompt }
